@@ -1,0 +1,9 @@
+admin/node_modules
+main/node_modules
+admin/package-lock.json
+main/node_modules
+admin/build
+main/build
+.vscode
+main/README.md
+admin/README.md

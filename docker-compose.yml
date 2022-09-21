@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    hostname: postgres
+    networks:
+      - MyNet
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: admin
+  mongo:
+    image: mongo
+    restart: always
+    hostname: mongo
+    networks:
+      - MyNet
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: pwd
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    hostname: rabbit
+    container_name: rabbitmq
+    networks:
+      - MyNet
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  admin:
+    container_name: admin-api
+    restart: always
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    networks:
+      - MyNet
+    ports:
+      - "3000:3000"
+  main:
+    container_name: main-api
+    restart: always
+    build:
+      context: ./main
+      dockerfile: Dockerfile
+    networks:
+      - MyNet
+    ports:
+      - "3001:3000"
+
+networks:
+  MyNet:
+    driver: bridge
